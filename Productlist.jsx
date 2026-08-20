@@ -17,7 +17,7 @@ const products = [
     price: 20,
     category: "Indoor Plants",
     image: "/images/snake-plant.jpg",
-    description: "A low-maintenance plant that improves indoor air quality."
+    description: "A low-maintenance plant perfect for your home."
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ const products = [
     price: 18,
     category: "Flowering Plants",
     image: "/images/peace-lily.jpg",
-    description: "A lovely flowering plant perfect for home decoration."
+    description: "A beautiful flowering plant for indoor decoration."
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ const products = [
     price: 12,
     category: "Indoor Plants",
     image: "/images/money-plant.jpg",
-    description: "A popular indoor plant that is easy to grow."
+    description: "An attractive and easy-to-grow indoor plant."
   },
   {
     id: 5,
@@ -41,7 +41,7 @@ const products = [
     price: 25,
     category: "Flowering Plants",
     image: "/images/rose.jpg",
-    description: "A beautiful flowering plant with attractive roses."
+    description: "A beautiful plant that produces colorful roses."
   },
   {
     id: 6,
@@ -49,7 +49,7 @@ const products = [
     price: 10,
     category: "Succulents",
     image: "/images/cactus.jpg",
-    description: "A small, attractive plant requiring very little water."
+    description: "A low-maintenance plant that requires little water."
   }
 ];
 
@@ -60,34 +60,42 @@ function ProductList() {
     dispatch(addItem(product));
   };
 
-  const categories = [...new Set(products.map((product) => product.category))];
+  const categories = [
+    ...new Set(products.map((product) => product.category))
+  ];
 
   return (
     <div className="product-list">
+
       <h1>Paradise Nursery</h1>
       <h2>Our Plants</h2>
 
       {categories.map((category) => (
-        <div key={category} className="category-section">
-          <h3>{category}</h3>
+        <div className="category-section" key={category}>
+
+          <h2>{category}</h2>
 
           <div className="product-container">
+
             {products
               .filter((product) => product.category === category)
               .map((product) => (
+
                 <div className="product-card" key={product.id}>
+
                   <img
                     src={product.image}
                     alt={product.name}
-                    width="200"
                   />
 
-                  <h4>{product.name}</h4>
+                  <h3>{product.name}</h3>
 
                   <p>{product.description}</p>
 
                   <p>
-                    <strong>${product.price}</strong>
+                    <strong>
+                      ${product.price.toFixed(2)}
+                    </strong>
                   </p>
 
                   <button
@@ -95,11 +103,15 @@ function ProductList() {
                   >
                     Add to Cart
                   </button>
+
                 </div>
+
               ))}
+
           </div>
         </div>
       ))}
+
     </div>
   );
 }
