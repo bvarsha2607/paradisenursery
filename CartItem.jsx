@@ -7,18 +7,19 @@ function CartItem() {
 
   const cartItems = useSelector((state) => state.cart);
 
-  // Calculate total quantity
+  // Calculate total number of items
   const totalItems = cartItems.reduce(
     (total, item) => total + item.quantity,
     0
   );
 
-  // Calculate total price
-  const totalPrice = cartItems.reduce(
+  // Calculate total cost
+  const totalCost = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
+  // Increase quantity
   const increaseQuantity = (item) => {
     dispatch(
       updateQuantity({
@@ -28,6 +29,7 @@ function CartItem() {
     );
   };
 
+  // Decrease quantity
   const decreaseQuantity = (item) => {
     if (item.quantity > 1) {
       dispatch(
@@ -39,10 +41,12 @@ function CartItem() {
     }
   };
 
+  // Remove item
   const handleRemove = (id) => {
     dispatch(removeItem(id));
   };
 
+  // Empty cart
   if (cartItems.length === 0) {
     return (
       <div className="cart-page">
@@ -60,7 +64,7 @@ function CartItem() {
     <div className="cart-page">
       <h1>Shopping Cart</h1>
 
-      <p>Total Items: {totalItems}</p>
+      <h3>Total Items: {totalItems}</h3>
 
       {cartItems.map((item) => (
         <div className="cart-item" key={item.id}>
@@ -70,17 +74,17 @@ function CartItem() {
             width="150"
           />
 
-          <div>
+          <div className="cart-item-details">
             <h2>{item.name}</h2>
 
             <p>Price: ${item.price}</p>
 
-            <div>
+            <div className="quantity-controls">
               <button onClick={() => decreaseQuantity(item)}>
                 -
               </button>
 
-              <span> {item.quantity} </span>
+              <span>{item.quantity}</span>
 
               <button onClick={() => increaseQuantity(item)}>
                 +
@@ -100,7 +104,7 @@ function CartItem() {
       ))}
 
       <div className="cart-summary">
-        <h2>Total Cost: ${totalPrice.toFixed(2)}</h2>
+        <h2>Total Cost: ${totalCost.toFixed(2)}</h2>
 
         <button onClick={() => window.history.back()}>
           Continue Shopping
@@ -117,8 +121,3 @@ function CartItem() {
 }
 
 export default CartItem;
-
-                <span>{item.quantity}</span>
-                <button
-                  className="qty-btn"
-                  onClick={() => handleIncrement(item)}
