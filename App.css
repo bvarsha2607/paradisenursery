@@ -1,26 +1,51 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import "./App.css";
+/* Paradise Nursery Landing Page */
 
-function App() {
-  const navigate = useNavigate();
+.landing-page {
+  min-height: 100vh;
+  width: 100%;
+  background-image: url("./assets/landing-page.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
-  return (
-    <div className="landing-page">
-      <div className="landing-content">
-        <h1>Paradise Nursery</h1>
-
-        <p>
-          Welcome to Paradise Nursery, your one-stop shop for
-          beautiful and healthy plants.
-        </p>
-
-        <button onClick={() => navigate("/products")}>
-          Get Started
-        </button>
-      </div>
-    </div>
-  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-export default App;
+/* Content on the landing page */
+
+.landing-content {
+  text-align: center;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 15px;
+}
+
+/* Company Name */
+
+.landing-content h1 {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+/* Description */
+
+.landing-content p {
+  font-size: 20px;
+  margin-bottom: 25px;
+}
+
+/* Get Started Button */
+
+.landing-content button {
+  padding: 12px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.landing-content button:hover {
+  transform: scale(1.05);
+}
