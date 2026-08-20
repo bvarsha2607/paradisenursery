@@ -1,23 +1,23 @@
-```jsx
 import React from "react";
-import { Link } from "react-router-dom";
+import "./App.css";
 
 function App() {
   return (
     <div className="landing-page">
-      <h1>Paradise Nursery</h1>
+      <div className="landing-content">
+        <h1>Paradise Nursery</h1>
 
-      <p>
-        Welcome to Paradise Nursery – your online destination for beautiful
-        and healthy plants.
-      </p>
+        <p>
+          Welcome to Paradise Nursery – your online destination for
+          beautiful and healthy plants.
+        </p>
 
-      <Link to="/products">
-        <button>Get Started</button>
-      </Link>
+        <button onClick={() => alert("Welcome to Paradise Nursery!")}>
+          Get Started
+        </button>
+      </div>
     </div>
   );
 }
 
 export default App;
-```
