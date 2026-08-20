@@ -1,139 +1,122 @@
-```jsx
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import {
-  increaseQuantity,
-  decreaseQuantity,
-  removeFromCart,
-} from "../redux/CartSlice";
+import { removeItem, updateQuantity } from "./CartSlice";
 
 function CartItem() {
   const dispatch = useDispatch();
 
-  const cartItems = useSelector((state) => state.cart.items);
-  const totalAmount = useSelector((state) => state.cart.totalAmount);
+  const cartItems = useSelector((state) => state.cart);
 
-  const handleIncrease = (id) => {
-    dispatch(increaseQuantity(id));
+  // Calculate total quantity
+  const totalItems = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
+  // Calculate total price
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  const increaseQuantity = (item) => {
+    dispatch(
+      updateQuantity({
+        id: item.id,
+        quantity: item.quantity + 1,
+      })
+    );
   };
 
-  const handleDecrease = (id) => {
-    dispatch(decreaseQuantity(id));
+  const decreaseQuantity = (item) => {
+    if (item.quantity > 1) {
+      dispatch(
+        updateQuantity({
+          id: item.id,
+          quantity: item.quantity - 1,
+        })
+      );
+    }
   };
 
   const handleRemove = (id) => {
-    dispatch(removeFromCart(id));
+    dispatch(removeItem(id));
   };
+
+  if (cartItems.length === 0) {
+    return (
+      <div className="cart-page">
+        <h1>Shopping Cart</h1>
+        <h2>Your cart is empty</h2>
+
+        <button onClick={() => window.history.back()}>
+          Continue Shopping
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="cart-page">
-      {/* Navigation Bar */}
-      <nav className="navbar">
-        <div className="navbar-brand">
-          <Link to="/">🌿 Paradise Nursery</Link>
-        </div>
+      <h1>Shopping Cart</h1>
 
-        <div className="navbar-links">
-          <Link to="/">Home</Link>
-          <Link to="/products">Plants</Link>
-          <Link to="/cart">🛒 Cart</Link>
-        </div>
-      </nav>
+      <p>Total Items: {totalItems}</p>
 
-      {/* Shopping Cart */}
-      <div className="cart-container">
-        <h1>Shopping Cart</h1>
+      {cartItems.map((item) => (
+        <div className="cart-item" key={item.id}>
+          <img
+            src={item.image}
+            alt={item.name}
+            width="150"
+          />
 
-        {cartItems.length === 0 ? (
-          <div className="empty-cart">
-            <h2>Your cart is empty</h2>
-            <Link to="/products">
-              <button>Continue Shopping</button>
-            </Link>
-          </div>
-        ) : (
-          <>
-            {cartItems.map((item) => (
-              <div className="cart-item" key={item.id}>
-                {/* Plant Thumbnail */}
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="cart-item-image"
-                />
+          <div>
+            <h2>{item.name}</h2>
 
-                {/* Plant Details */}
-                <div className="cart-item-details">
-                  <h2>{item.name}</h2>
-                  <p>Unit Price: ${item.price}</p>
+            <p>Price: ${item.price}</p>
 
-                  {/* Quantity Controls */}
-                  <div className="quantity-controls">
-                    <button
-                      onClick={() => handleDecrease(item.id)}
-                      disabled={item.quantity === 1}
-                    >
-                      -
-                    </button>
-
-                    <span>{item.quantity}</span>
-
-                    <button
-                      onClick={() => handleIncrease(item.id)}
-                    >
-                      +
-                    </button>
-                  </div>
-
-                  {/* Total Cost for Individual Plant */}
-                  <p>
-                    <strong>
-                      Total: ${(item.price * item.quantity).toFixed(2)}
-                    </strong>
-                  </p>
-
-                  {/* Delete Button */}
-                  <button
-                    className="delete-button"
-                    onClick={() => handleRemove(item.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
-
-            {/* Cart Total */}
-            <div className="cart-summary">
-              <h2>
-                Total Cart Amount: ${totalAmount.toFixed(2)}
-              </h2>
-
-              {/* Checkout Button */}
-              <button
-                className="checkout-button"
-                onClick={() => alert("Coming Soon!")}
-              >
-                Checkout
+            <div>
+              <button onClick={() => decreaseQuantity(item)}>
+                -
               </button>
 
-              {/* Continue Shopping */}
-              <Link to="/products">
-                <button className="continue-button">
-                  Continue Shopping
-                </button>
-              </Link>
+              <span> {item.quantity} </span>
+
+              <button onClick={() => increaseQuantity(item)}>
+                +
+              </button>
             </div>
-          </>
-        )}
+
+            <p>
+              Item Total: $
+              {(item.price * item.quantity).toFixed(2)}
+            </p>
+
+            <button onClick={() => handleRemove(item.id)}>
+              Remove
+            </button>
+          </div>
+        </div>
+      ))}
+
+      <div className="cart-summary">
+        <h2>Total Cost: ${totalPrice.toFixed(2)}</h2>
+
+        <button onClick={() => window.history.back()}>
+          Continue Shopping
+        </button>
+
+        <button
+          onClick={() => alert("Thank you for your purchase!")}
+        >
+          Checkout
+        </button>
       </div>
     </div>
   );
 }
 
 export default CartItem;
-```
 
                 <span>{item.quantity}</span>
                 <button
